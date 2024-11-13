@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   ReactFlow,
   Background,
@@ -34,8 +34,13 @@ const initialNodes = [
 ];
 
 function App() {
+  const [variant, setVariant] = useState("dots");
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
+
+  useEffect(() => {
+    console.log(variant);
+  }, [variant]);
 
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -53,7 +58,18 @@ function App() {
   );
 
   return (
-    <div style={{ height: "100%" }}>
+    <div style={{ height: "94vh", width: "100%", position: "relative" }}>
+      <div className="button">
+        <button type="button" onClick={() => setVariant("cross")}>
+          Cross
+        </button>
+        <button type="button" onClick={() => setVariant("dots")}>
+          Dots
+        </button>
+        <button type="button" onClick={() => setVariant("lines")}>
+          Lines
+        </button>
+      </div>
       <ReactFlow
         nodes={nodes}
         onNodesChange={onNodesChange}
@@ -62,7 +78,7 @@ function App() {
         onConnect={onConnect}
         fitView
       >
-        <Background />
+        <Background variant={variant} />
         <Controls />
       </ReactFlow>
     </div>
