@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import {
   ReactFlow,
   Background,
@@ -9,38 +9,66 @@ import {
   addEdge,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-
-const initialEdges = [
-  {
-    id: "1-2",
-    source: "1",
-    target: "2",
-    label: "Software Developer",
-    type: "step",
-  },
-];
+import CustomeNode from './Components/CustomeNode';
 
 const initialNodes = [
   {
-    id: "1",
+    id: 'node-1',
+    type: 'textUpdater',
     position: { x: 0, y: 0 },
-    data: { label: "Tushar" },
+    data: { value: 123 },
   },
   {
-    id: "2",
-    position: { x: 100, y: 100 },
-    data: { label: "Mandani" },
+    id: 'node-2',
+    type: 'output',
+    targetPosition: 'top',
+    position: { x: 0, y: 200 },
+    data: { label: 'node 2' },
+  },
+  {
+    id: 'node-3',
+    type: 'output',
+    targetPosition: 'top',
+    position: { x: 200, y: 200 },
+    data: { label: 'node 3' },
   },
 ];
+
+
+const initialEdges = [
+  { id: 'edge-1', source: 'node-1', sourceHandle: 'a', target: 'node-2', animated: true },
+  { id: 'edge-2', source: 'node-1', sourceHandle: 'b', target: 'node-3', animated: true },
+];
+
+// const initialEdges = [
+//   {
+//     id: "1-2",
+//     source: "1",
+//     target: "2",
+//     label: "Software Developer",
+//     type: "step",
+//   },
+// ];
+
+// const initialNodes = [
+//   {
+//     id: "1",
+//     position: { x: 0, y: 0 },
+//     data: { label: "Tushar" },
+//   },
+//   {
+//     id: "2",
+//     position: { x: 100, y: 100 },
+//     data: { label: "Mandani" },
+//   },
+// ];
+
+const nodeTypes = { textUpdater: CustomeNode };
 
 function App() {
   const [variant, setVariant] = useState("dots");
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
-
-  useEffect(() => {
-    console.log(variant);
-  }, [variant]);
 
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -56,6 +84,7 @@ function App() {
     (params) => setEdges((eds) => addEdge(params, eds)),
     []
   );
+
 
   return (
     <div style={{ height: "94vh", width: "100%", position: "relative" }}>
@@ -76,6 +105,7 @@ function App() {
         edges={edges}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        nodeTypes={nodeTypes}
         fitView
       >
         <Background variant={variant} />
