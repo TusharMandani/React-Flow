@@ -9,7 +9,7 @@ import {
   addEdge,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import CustomeNode from './Components/CustomeNode';
+import CustomeNode from "./components/CustomeNode/CustomeNode";
 
 const initialNodes = [
   {
