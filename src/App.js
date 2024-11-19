@@ -30,14 +30,14 @@ const initialNodes = [
     id: 'node-3',
     type: 'output',
     targetPosition: 'top',
-    position: { x: 200, y: 200 },
+    position: { x: 300, y: 200 },
     data: { label: 'node 3' },
   },
 ];
 
 const initialEdges = [
-  { id: 'edge-1', source: 'node-1', type: 'custom-edge', sourceHandle: 'a', target: 'node-2', animated: true },
-  { id: 'edge-2', source: 'node-1', type: 'custom-edge', sourceHandle: 'b', target: 'node-3', animated: true },
+  { id: 'edge-1', source: 'node-1', type: 'custom-edge', sourceHandle: 'a', target: 'node-2' },
+  { id: 'edge-2', source: 'node-1', type: 'custom-edge', sourceHandle: 'b', target: 'node-3' },
 ];
 
 const nodeTypes = { textUpdater: CustomeNode };
@@ -47,7 +47,7 @@ function App() {
   const [variant, setVariant] = useState("dots");
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
-  const [animationEnabled, setAnimationEnabled] = useState(true); // State for animation
+  const [animationEnabled, setAnimationEnabled] = useState(false);
 
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
