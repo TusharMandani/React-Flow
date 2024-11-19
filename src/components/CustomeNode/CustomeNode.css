@@ -1,3 +1,12 @@
 .text-updater-node{
-    background-color: #d1d1d5;
+  background-color: #d1d1d5;
+  height: 50px;
+  border: 1px solid #eee;
+  padding: 5px;
+  border-radius: 5px;
 }
+.text-updater-node label {
+    display: block;
+    color: #777;
+    font-size: 12px;
+  }

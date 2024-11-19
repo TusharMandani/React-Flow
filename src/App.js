@@ -10,6 +10,7 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import CustomeNode from "./components/CustomeNode/CustomeNode";
+import CustomEdge from "./components/CustomeEdge/CustomeEdge";
 
 const initialNodes = [
   {
@@ -34,41 +35,19 @@ const initialNodes = [
   },
 ];
 
-
 const initialEdges = [
-  { id: 'edge-1', source: 'node-1', sourceHandle: 'a', target: 'node-2', animated: true },
-  { id: 'edge-2', source: 'node-1', sourceHandle: 'b', target: 'node-3', animated: true },
+  { id: 'edge-1', source: 'node-1', type: 'custom-edge', sourceHandle: 'a', target: 'node-2', animated: true },
+  { id: 'edge-2', source: 'node-1', type: 'custom-edge', sourceHandle: 'b', target: 'node-3', animated: true },
 ];
 
-// const initialEdges = [
-//   {
-//     id: "1-2",
-//     source: "1",
-//     target: "2",
-//     label: "Software Developer",
-//     type: "step",
-//   },
-// ];
-
-// const initialNodes = [
-//   {
-//     id: "1",
-//     position: { x: 0, y: 0 },
-//     data: { label: "Tushar" },
-//   },
-//   {
-//     id: "2",
-//     position: { x: 100, y: 100 },
-//     data: { label: "Mandani" },
-//   },
-// ];
-
 const nodeTypes = { textUpdater: CustomeNode };
+const edgeTypes = { 'custom-edge': CustomEdge };
 
 function App() {
   const [variant, setVariant] = useState("dots");
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
+  const [animationEnabled, setAnimationEnabled] = useState(true); // State for animation
 
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -81,10 +60,23 @@ function App() {
   );
 
   const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
-    []
+    (connection) => {
+      const edge = { ...connection, type: 'custom-edge', animated: animationEnabled };
+      setEdges((eds) => addEdge(edge, eds));
+    },
+    [animationEnabled]
   );
 
+  // Toggle animation on edges
+  const toggleEdgeAnimation = () => {
+    setAnimationEnabled((prev) => !prev);
+    setEdges((currentEdges) =>
+      currentEdges.map((edge) => ({
+        ...edge,
+        animated: !animationEnabled, // Toggle the animation state
+      }))
+    );
+  };
 
   return (
     <div style={{ height: "94vh", width: "100%", position: "relative" }}>
@@ -98,6 +90,15 @@ function App() {
         <button type="button" onClick={() => setVariant("lines")}>
           Lines
         </button>
+        <label>
+          <input
+            type="checkbox"
+            checked={animationEnabled}
+            onChange={toggleEdgeAnimation}
+            style={{ marginLeft: "10px" }}
+          />
+          Toggle Edge Animation
+        </label>
       </div>
       <ReactFlow
         nodes={nodes}
@@ -106,6 +107,7 @@ function App() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         fitView
       >
         <Background variant={variant} />
