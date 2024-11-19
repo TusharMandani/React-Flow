@@ -1,19 +1,19 @@
 .button {
-    gap: 10px;
-  }
-  
-  button {
-    color: black; 
-    border: 1px solid #ccc; 
-    padding: 8px 16px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #dcdcdc; /* Slightly darker grey on hover */
-  }
-  
-  /* CSS for Slider Button */
+  gap: 10px;
+}
+
+button {
+  color: black;
+  border: 1px solid #ccc;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #dcdcdc; /* Slightly darker grey on hover */
+}
+
+/* CSS for Slider Button */
 .slider-container {
   position: fixed;
   right: 20px;

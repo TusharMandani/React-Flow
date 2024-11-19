@@ -73,7 +73,7 @@ function App() {
     setEdges((currentEdges) =>
       currentEdges.map((edge) => ({
         ...edge,
-        animated: !animationEnabled, // Toggle the animation state
+        animated: !animationEnabled,
       }))
     );
   };
@@ -90,15 +90,17 @@ function App() {
         <button type="button" onClick={() => setVariant("lines")}>
           Lines
         </button>
-        <label>
-          <input
-            type="checkbox"
-            checked={animationEnabled}
-            onChange={toggleEdgeAnimation}
-            style={{ marginLeft: "10px" }}
-          />
-          Toggle Edge Animation
-        </label>
+        <div className="slider-container">
+          <label className="switch">
+            <input
+              type="checkbox"
+              checked={animationEnabled}
+              onChange={toggleEdgeAnimation}
+              className="slider-checkbox"
+            />
+            <span className="slider"></span>
+          </label>
+        </div>
       </div>
       <ReactFlow
         nodes={nodes}
