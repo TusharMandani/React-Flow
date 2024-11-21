@@ -3,20 +3,44 @@ import { Link } from 'react-router-dom';
 
 export default function Login() {
     const [formData, setFormData] = useState({ email: '', password: '' });
-    const [error, setError] = useState('');
+    const [errors, setErrors] = useState({ email: '', password: '' });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+
+        // Clear the error for the field being updated
+        setErrors({ ...errors, [name]: '' });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!formData.email || !formData.password) {
-            setError('Please fill in both fields.');
-        } else {
-            setError('');
+        let valid = true;
+        let tempErrors = { email: '', password: '' };
+
+        // Email validation
+        if (!formData.email) {
+            tempErrors.email = 'Email is required.';
+            valid = false;
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            tempErrors.email = 'Invalid email format.';
+            valid = false;
+        }
+
+        // Password validation
+        if (!formData.password) {
+            tempErrors.password = 'Password is required.';
+            valid = false;
+        } else if (formData.password.length < 6) {
+            tempErrors.password = 'Password must be at least 6 characters.';
+            valid = false;
+        }
+
+        setErrors(tempErrors);
+
+        if (valid) {
             console.log('Login Successful:', formData);
+            setFormData({ email: '', password: '' });
         }
     };
 
@@ -24,10 +48,8 @@ export default function Login() {
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
                 <h2 className="text-2xl font-bold text-center text-gray-800">Login</h2>
-                {error && (
-                    <p className="mt-4 text-sm text-red-500">{error}</p>
-                )}
-                <form className="mt-6" onSubmit={handleSubmit}>
+                <form className="mt-6" onSubmit={handleSubmit} noValidate> {/* Added noValidate here */}
+                    {/* Email Field */}
                     <div className="mb-4">
                         <label
                             htmlFor="email"
@@ -41,10 +63,17 @@ export default function Login() {
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 mt-2 text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className={`w-full px-4 py-2 mt-2 text-gray-700 border ${errors.email ? 'border-red-500' : 'border-gray-300'
+                                } rounded-lg focus:outline-none focus:ring-2 ${errors.email ? 'focus:ring-red-500' : 'focus:ring-blue-500'
+                                }`}
                             placeholder="Enter your email"
                         />
+                        {errors.email && (
+                            <p className="mt-1 text-sm text-red-500">{errors.email}</p>
+                        )}
                     </div>
+
+                    {/* Password Field */}
                     <div className="mb-4">
                         <label
                             htmlFor="password"
@@ -58,10 +87,17 @@ export default function Login() {
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 mt-2 text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className={`w-full px-4 py-2 mt-2 text-gray-700 border ${errors.password ? 'border-red-500' : 'border-gray-300'
+                                } rounded-lg focus:outline-none focus:ring-2 ${errors.password ? 'focus:ring-red-500' : 'focus:ring-blue-500'
+                                }`}
                             placeholder="Enter your password"
                         />
+                        {errors.password && (
+                            <p className="mt-1 text-sm text-red-500">{errors.password}</p>
+                        )}
                     </div>
+
+                    {/* Submit Button */}
                     <button
                         type="submit"
                         className="w-full px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -69,6 +105,8 @@ export default function Login() {
                         Login
                     </button>
                 </form>
+
+                {/* Register Link */}
                 <div className="mt-6 text-center">
                     <p className="text-gray-600">
                         Don't have an account?{' '}
