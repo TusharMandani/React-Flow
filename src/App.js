@@ -11,6 +11,9 @@ import {
 import "@xyflow/react/dist/style.css";
 import CustomeNode from "./components/CustomeNode/CustomeNode";
 import CustomEdge from "./components/CustomeEdge/CustomeEdge";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./components/Authentication/Login/Login";
+import Register from "./components/Authentication/Register/Register";
 
 const initialNodes = [
   {
@@ -79,43 +82,52 @@ function App() {
   };
 
   return (
-    <div style={{ height: "94vh", width: "100%", position: "relative" }}>
-      <div className="button">
-        <button type="button" onClick={() => setVariant("cross")}>
-          Cross
-        </button>
-        <button type="button" onClick={() => setVariant("dots")}>
-          Dots
-        </button>
-        <button type="button" onClick={() => setVariant("lines")}>
-          Lines
-        </button>
-        <div className="slider-container">
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={animationEnabled}
-              onChange={toggleEdgeAnimation}
-              className="slider-checkbox"
-            />
-            <span className="slider"></span>
-          </label>
-        </div>
-      </div>
-      <ReactFlow
-        nodes={nodes}
-        onNodesChange={onNodesChange}
-        edges={edges}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        nodeTypes={nodeTypes}
-        edgeTypes={edgeTypes}
-        fitView
-      >
-        <Background variant={variant} />
-        <Controls />
-      </ReactFlow>
-    </div>
+    // <div style={{ height: "94vh", width: "100%", position: "relative" }}>
+    //   <div className="button">
+    //     <button type="button" onClick={() => setVariant("cross")}>
+    //       Cross
+    //     </button>
+    //     <button type="button" onClick={() => setVariant("dots")}>
+    //       Dots
+    //     </button>
+    //     <button type="button" onClick={() => setVariant("lines")}>
+    //       Lines
+    //     </button>
+    //     <div className="slider-container">
+    //       <label className="switch">
+    //         <input
+    //           type="checkbox"
+    //           checked={animationEnabled}
+    //           onChange={toggleEdgeAnimation}
+    //           className="slider-checkbox"
+    //         />
+    //         <span className="slider"></span>
+    //       </label>
+    //     </div>
+    //   </div>
+    //   <ReactFlow
+    //     nodes={nodes}
+    //     onNodesChange={onNodesChange}
+    //     edges={edges}
+    //     onEdgesChange={onEdgesChange}
+    //     onConnect={onConnect}
+    //     nodeTypes={nodeTypes}
+    //     edgeTypes={edgeTypes}
+    //     fitView
+    //   >
+    //     <Background variant={variant} />
+    //     <Controls />
+    //   </ReactFlow>
+    // </div>
+    <>
+      <Router>
+        <Routes>
+          <Route exact path="/" element={<Login />} />
+          <Route exact path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </Router>
+    </>
   );
 }
 
