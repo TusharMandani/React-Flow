@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Login() {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [errors, setErrors] = useState({ email: '', password: '' });
+    const navigate = useNavigate(); 
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -41,6 +42,7 @@ export default function Login() {
         if (valid) {
             console.log('Login Successful:', formData);
             setFormData({ email: '', password: '' });
+            navigate('/dashboard');
         }
     };
 
