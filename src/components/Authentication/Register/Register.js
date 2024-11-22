@@ -20,6 +20,43 @@ export default function Register() {
     });
     const navigate = useNavigate();
 
+    const validateField = (name, value) => {
+        let error = '';
+        if (name === 'firstName') {
+            if (!value) {
+                error = 'First name is required.';
+            }
+        }
+        if (name === 'lastName') {
+            if (!value) {
+                error = 'Last name is required.';
+            }
+        }
+        if (name === 'email') {
+            if (!value) {
+                error = 'Email is required.';
+            } else if (!/\S+@\S+\.\S+/.test(value)) {
+                error = 'Invalid email format.';
+            }
+        }
+        if (name === 'password') {
+            if (!value) {
+                error = 'Password is required.';
+            } else if (value.length < 6) {
+                error = 'Password must be at least 6 characters.';
+            }
+        }
+
+        return error;
+    };
+
+
+    const handleBlur = (e) => {
+        const { name, value } = e.target;
+        const error = validateField(name, value);
+        setErrors({ ...errors, [name]: error });
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -99,6 +136,7 @@ export default function Register() {
                             name="firstName"
                             value={formData.firstName}
                             onChange={handleChange}
+                            onBlur={handleBlur}
                             className="w-full px-4 py-2 mt-2 text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Enter your first name"
                         />
@@ -120,6 +158,7 @@ export default function Register() {
                             name="lastName"
                             value={formData.lastName}
                             onChange={handleChange}
+                            onBlur={handleBlur}
                             className="w-full px-4 py-2 mt-2 text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Enter your last name"
                         />
@@ -141,6 +180,7 @@ export default function Register() {
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
+                            onBlur={handleBlur}
                             className="w-full px-4 py-2 mt-2 text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Enter your email"
                         />
@@ -162,6 +202,7 @@ export default function Register() {
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
+                            onBlur={handleBlur}
                             className="w-full px-4 py-2 mt-2 text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Enter your password"
                         />

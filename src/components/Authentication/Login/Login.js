@@ -17,6 +17,32 @@ export default function Login() {
         setErrors({ ...errors, [name]: '' });
     };
 
+    const validateField = (name, value) => {
+        let error = '';
+        if (name === 'email') {
+            if (!value) {
+                error = 'Email is required.';
+            } else if (!/\S+@\S+\.\S+/.test(value)) {
+                error = 'Invalid email format.';
+            }
+        } else if (name === 'password') {
+            if (!value) {
+                error = 'Password is required.';
+            } else if (value.length < 6) {
+                error = 'Password must be at least 6 characters.';
+            }
+        }
+        return error;
+    };
+
+
+    const handleBlur = (e) => {
+        const { name, value } = e.target;
+        const error = validateField(name, value);
+        setErrors({ ...errors, [name]: error });
+    };
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         let valid = true;
@@ -79,6 +105,7 @@ export default function Login() {
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
+                            onBlur={handleBlur}
                             className={`w-full px-4 py-2 mt-2 text-gray-700 border ${errors.email ? 'border-red-500' : 'border-gray-300'
                                 } rounded-lg focus:outline-none focus:ring-2 ${errors.email ? 'focus:ring-red-500' : 'focus:ring-blue-500'
                                 }`}
@@ -103,6 +130,7 @@ export default function Login() {
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
+                            onBlur={handleBlur}
                             className={`w-full px-4 py-2 mt-2 text-gray-700 border ${errors.password ? 'border-red-500' : 'border-gray-300'
                                 } rounded-lg focus:outline-none focus:ring-2 ${errors.password ? 'focus:ring-red-500' : 'focus:ring-blue-500'
                                 }`}
