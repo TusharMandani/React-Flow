@@ -5,7 +5,6 @@ import { login } from '../../../services/AuthService'
 export default function Login() {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [errors, setErrors] = useState({ email: '', password: '' });
-    const [serverError, setServerError] = useState(''); // For server-side errors
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -14,7 +13,6 @@ export default function Login() {
 
         // Clear the error for the field being updated
         setErrors({ ...errors, [name]: '' });
-        setServerError(''); // Clear server error
     };
 
     const handleSubmit = async (e) => {
@@ -51,8 +49,7 @@ export default function Login() {
                 // Redirect to the dashboard on success
                 navigate('/dashboard');
             } catch (error) {
-                // Set server-side error
-                setServerError(error.message);
+                
             }
         }
     };
@@ -109,12 +106,6 @@ export default function Login() {
                             <p className="mt-1 text-sm text-red-500">{errors.password}</p>
                         )}
                     </div>
-
-                    {/* Server Error */}
-                    {serverError && (
-                        <p className="mt-2 text-sm text-red-500 text-center">{serverError}</p>
-                    )}
-
                     {/* Submit Button */}
                     <button
                         type="submit"
