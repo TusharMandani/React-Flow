@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { login } from '../../../services/AuthService'
 
 export default function Login() {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [errors, setErrors] = useState({ email: '', password: '' });
-    const navigate = useNavigate(); 
+    const [serverError, setServerError] = useState(''); // For server-side errors
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -12,9 +14,10 @@ export default function Login() {
 
         // Clear the error for the field being updated
         setErrors({ ...errors, [name]: '' });
+        setServerError(''); // Clear server error
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         let valid = true;
         let tempErrors = { email: '', password: '' };
@@ -40,9 +43,17 @@ export default function Login() {
         setErrors(tempErrors);
 
         if (valid) {
-            console.log('Login Successful:', formData);
-            setFormData({ email: '', password: '' });
-            navigate('/dashboard');
+            try {
+                // Call the login service
+                const data = await login(formData.email, formData.password);
+                console.log('Login Successful:', data);
+
+                // Redirect to the dashboard on success
+                navigate('/dashboard');
+            } catch (error) {
+                // Set server-side error
+                setServerError(error.message);
+            }
         }
     };
 
@@ -50,7 +61,7 @@ export default function Login() {
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
                 <h2 className="text-2xl font-bold text-center text-gray-800">Login</h2>
-                <form className="mt-6" onSubmit={handleSubmit} noValidate> {/* Added noValidate here */}
+                <form className="mt-6" onSubmit={handleSubmit} noValidate>
                     {/* Email Field */}
                     <div className="mb-4">
                         <label
@@ -98,6 +109,11 @@ export default function Login() {
                             <p className="mt-1 text-sm text-red-500">{errors.password}</p>
                         )}
                     </div>
+
+                    {/* Server Error */}
+                    {serverError && (
+                        <p className="mt-2 text-sm text-red-500 text-center">{serverError}</p>
+                    )}
 
                     {/* Submit Button */}
                     <button
