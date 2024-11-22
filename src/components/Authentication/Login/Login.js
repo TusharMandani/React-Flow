@@ -47,11 +47,13 @@ export default function Login() {
                 // Call the login service
                 const data = await login(formData.email, formData.password);
                 toast.success(data.message)
-                 // Redirect to login after a delay
-                 setTimeout(() => {
+                const token = data.token;
+                localStorage.setItem('authToken', token);
+                // Redirect to login after a delay
+                setTimeout(() => {
                     navigate('/dashboard');
                 }, 2000);
-                
+
             } catch (error) {
                 toast.error("Login failed")
             }
