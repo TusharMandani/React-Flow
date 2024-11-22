@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { register } from '../../../services/AuthService'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function Register() {
     const [formData, setFormData] = useState({
@@ -14,6 +18,7 @@ export default function Register() {
         email: '',
         password: '',
     });
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -23,7 +28,7 @@ export default function Register() {
         setErrors({ ...errors, [name]: '' });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         let isValid = true;
         let newErrors = { ...errors };
@@ -58,13 +63,20 @@ export default function Register() {
         setErrors(newErrors);
 
         if (isValid) {
-            console.log('Registration Successful:', formData);
-            setFormData({
-                firstName: '',
-                lastName: '',
-                email: '',
-                password: '',
-            })
+            try {
+                // Call the register service
+                const data = await register(formData.firstName, formData.lastName, formData.email, formData.password);
+                // Show toast message
+                toast.success(data.message);
+
+                // Redirect to login after a delay
+                setTimeout(() => {
+                    navigate('/login');
+                }, 2000);
+
+            } catch (error) {
+                toast.error('Registration failed, please try again.');
+            }
         }
     };
 
@@ -178,6 +190,7 @@ export default function Register() {
                     </p>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }

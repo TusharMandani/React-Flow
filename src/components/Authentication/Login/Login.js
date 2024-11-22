@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../../../services/AuthService'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Login() {
     const [formData, setFormData] = useState({ email: '', password: '' });
@@ -44,12 +46,14 @@ export default function Login() {
             try {
                 // Call the login service
                 const data = await login(formData.email, formData.password);
-                console.log('Login Successful:', data);
-
-                // Redirect to the dashboard on success
-                navigate('/dashboard');
-            } catch (error) {
+                toast.success(data.message)
+                 // Redirect to login after a delay
+                 setTimeout(() => {
+                    navigate('/dashboard');
+                }, 2000);
                 
+            } catch (error) {
+                toast.error("Login failed")
             }
         }
     };
@@ -128,6 +132,7 @@ export default function Login() {
                     </p>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }
