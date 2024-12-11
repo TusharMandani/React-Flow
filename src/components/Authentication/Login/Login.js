@@ -152,7 +152,7 @@ export default function Login() {
                 {/* Register Link */}
                 <div className="mt-6 text-center">
                     <p className="text-gray-600">
-                        Don't have an account?{' '}
+                        Don’t have an account yet?{' '}
                         <Link
                             to="/register"
                             className="text-blue-500 hover:underline"
@@ -161,6 +161,18 @@ export default function Login() {
                         </Link>
                     </p>
                 </div>
+                <div className="mt-6 text-center">
+                    <p className="text-gray-600">
+                        Trouble logging in?{' '}
+                        <Link
+                            to="/forgotPassword"
+                            className="text-blue-500 hover:underline"
+                        >
+                            Forgot password
+                        </Link>
+                    </p>
+                </div>
+
             </div>
             <ToastContainer />
         </div>

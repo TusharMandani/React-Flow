@@ -27,3 +27,15 @@ export const register = async (firstName, lastName, email, password) => {
         }
     }
 };
+export const forgotPassword = async (email) => {
+    try {
+        const response = await axios.post(`${API_URL}/auth/forgot-password`, { email });
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data.message || 'Forgot password failed');
+        } else {
+            throw new Error('An error occurred. Please try again later.');
+        }
+    }
+};
